@@ -24,7 +24,6 @@ const handler = async (data: InputType): Promise<ReturnType> => {
 
   try {
     board = await db.board.create({
-      // @ts-ignore
       data: {
         title,
       },

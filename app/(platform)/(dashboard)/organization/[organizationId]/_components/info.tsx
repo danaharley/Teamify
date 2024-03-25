@@ -21,6 +21,7 @@ export const Info = () => {
           alt={organization?.name!}
           fill
           className="rounded-md object-cover"
+          sizes="(max-width: 768px) 100vw, 33vw"
         />
       </div>
       <div className="space-y-1">

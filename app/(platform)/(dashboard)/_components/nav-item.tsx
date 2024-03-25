@@ -80,6 +80,7 @@ export const NavItem = ({
               alt={organization.name}
               className="rounded-sm object-cover"
               fill
+              sizes="(max-width: 768px) 100vw, 33vw"
             />
           </div>
           <span className="text-sm font-medium">{organization.name}</span>

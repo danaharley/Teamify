@@ -5,5 +5,5 @@ import { ActionState } from "@/lib/create-safe-action";
 
 import { UpdateList } from "@/actions/update-list/schema";
 
-export type InputType = z.infer<typeof UpdateList>;
+export type InputType = z.output<typeof UpdateList>;
 export type ReturnType = ActionState<InputType, List>;

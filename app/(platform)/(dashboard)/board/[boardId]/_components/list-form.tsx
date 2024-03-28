@@ -53,12 +53,10 @@ export const ListForm = () => {
   useOnClickOutside(formRef, disableEditing);
 
   const onSubmit = (formData: FormData) => {
-    const rawFormData = {
-      title: formData.get("title") as string,
-      boardId: formData.get("boardId") as string,
-    };
+    const title = formData.get("title") as string;
+    const boardId = formData.get("boardId") as string;
 
-    execute(rawFormData);
+    execute({ title, boardId });
   };
 
   if (isEditing) {

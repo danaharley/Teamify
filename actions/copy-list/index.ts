@@ -2,9 +2,11 @@
 
 import { revalidatePath } from "next/cache";
 import { auth } from "@clerk/nextjs";
+import { ACTION, ENTITY_TYPE } from "@prisma/client";
 
 import { createSafeAction } from "@/lib/create-safe-action";
 import { db } from "@/lib/db";
+import { createAuditLog } from "@/lib/create-audit-log";
 
 import { CopyList } from "@/actions/copy-list/schema";
 import { InputType, ReturnType } from "@/actions/copy-list/types";
@@ -68,13 +70,20 @@ const handler = async (data: InputType): Promise<ReturnType> => {
       },
     });
 
-    revalidatePath(`/board/${boardId}`);
-    return { data: list };
+    await createAuditLog({
+      entityId: list.id,
+      entityTitle: list.title,
+      entityType: ENTITY_TYPE.LIST,
+      action: ACTION.CREATE,
+    });
   } catch (error) {
     return {
       error: "Failed to copy.",
     };
   }
+
+  revalidatePath(`/board/${boardId}`);
+  return { data: list };
 };
 
 export const copyList = createSafeAction(CopyList, handler);

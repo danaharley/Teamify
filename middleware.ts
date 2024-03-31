@@ -1,14 +1,7 @@
 import { NextResponse } from "next/server";
 import { authMiddleware, redirectToSignIn } from "@clerk/nextjs";
 
-// See https://clerk.com/docs/references/nextjs/auth-middleware
-// for more information about configuring your Middleware
-
 export default authMiddleware({
-  // Allow signed out users to access the specified routes:
-  // Prevent the specified routes from accessing
-  // authentication information:
-  // ignoredRoutes: ['/no-auth-in-this-route'],
   publicRoutes: ["/"],
   afterAuth(auth, req) {
     if (auth.userId && auth.isPublicRoute) {
@@ -19,7 +12,6 @@ export default authMiddleware({
       }
 
       const orgSelection = new URL(path, req.url);
-
       return NextResponse.redirect(orgSelection);
     }
 
@@ -29,19 +21,11 @@ export default authMiddleware({
 
     if (auth.userId && !auth.orgId && req.nextUrl.pathname !== "/select-org") {
       const orgSelection = new URL("/select-org", req.url);
-
       return NextResponse.redirect(orgSelection);
     }
   },
 });
 
 export const config = {
-  matcher: [
-    // Exclude files with a "." followed by an extension, which are typically static files.
-    // Exclude files in the _next directory, which are Next.js internals.
-
-    "/((?!.+\\.[\\w]+$|_next).*)",
-    // Re-include any files in the api or trpc folders that might have an extension
-    "/(api|trpc)(.*)",
-  ],
+  matcher: ["/((?!.+\\.[\\w]+$|_next).*)", "/", "/(api|trpc)(.*)"],
 };

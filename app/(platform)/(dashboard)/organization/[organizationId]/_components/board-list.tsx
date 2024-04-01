@@ -9,6 +9,7 @@ import { Skeleton } from "@/components/ui/skeleton";
 
 import { db } from "@/lib/db";
 import { getAvailableCount } from "@/lib/org-limit";
+import { checkSubscription } from "@/lib/subscription";
 
 import { MAX_FREE_BOARDS } from "@/constants/boards";
 
@@ -27,6 +28,7 @@ export const BoardList = async () => {
   });
 
   const availableCount = await getAvailableCount();
+  const isPro = await checkSubscription();
 
   return (
     <div className="space-y-4">
@@ -51,9 +53,11 @@ export const BoardList = async () => {
             role="button"
             className="relative flex aspect-video h-full w-full flex-col items-center justify-center gap-y-1 rounded-sm bg-muted transition hover:opacity-75"
           >
-            <p className="text-sm">Create new board</p>
+            <p className="text-xs lg:text-sm">Create new board</p>
             <span className="text-xs">
-              {MAX_FREE_BOARDS - availableCount} remaining
+              {isPro
+                ? "Unlimited"
+                : `${MAX_FREE_BOARDS - availableCount} remaining`}
             </span>
             <Hint
               sideOffset={45}
